@@ -109,15 +109,20 @@ extension String{
             return value
         }
         if type is Float{
-            guard let value = (self as NSString).floatValue as? T else{ throw ParserErrors.invalidTypeOfParameter}
+            guard let value = (self as NSString).floatValue as? T else { throw ParserErrors.invalidTypeOfParameter
+            }
             return value
         }
         if type is Double{
-            guard let value = Double(self) as? T else{ throw ParserErrors.invalidTypeOfParameter}
+            guard let value = Double(self) as? T else {
+                throw ParserErrors.invalidTypeOfParameter
+            }
             return value
         }
         if type is String{
-            guard let value = self as? T else{ throw ParserErrors.invalidTypeOfParameter}
+            guard let value = self as? T else {
+                throw ParserErrors.invalidTypeOfParameter
+            }
             return value
         }
         throw ParserErrors.invalidTypeOfParameter

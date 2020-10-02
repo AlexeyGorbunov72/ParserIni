@@ -10,10 +10,24 @@ import Foundation
 let p = Parser()
 do{
     try p.parse(pathToFile: "/Users/Retard/Desktop/input.ini")
-    try print(p.getValue(section: "COMMON", parameter: "DiskCachePath", type:  String()))
+    try print(p.getValue(section: "COMMON",
+                         parameter: "LogNCMD",
+                         type:  Float()))
     
 } catch ParserErrors.invalidPathToFile{
-        print("invalid path to file")
+    print(ParserErrors.invalidPathToFile)
+} catch ParserErrors.invalidFormatOfFile{
+    print(ParserErrors.invalidFormatOfFile)
+} catch ParserErrors.invalidPair{
+    print(ParserErrors.invalidPair)
+} catch ParserErrors.invalidSectionName{
+    print(ParserErrors.invalidSectionName)
+} catch ParserErrors.invalidTypeOfParameter{
+    print(ParserErrors.invalidTypeOfParameter)
+} catch ParserErrors.unexistsParameter{
+    print(ParserErrors.unexistsParameter)
+} catch ParserErrors.unexistsSection{
+    print(ParserErrors.unexistsSection)
 }
 
 
