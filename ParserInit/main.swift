@@ -7,5 +7,14 @@
 
 import Foundation
 
-print("Hello, World!")
+let p = Parser()
+do{
+    try p.parse(pathToFile: "/Users/Retard/Desktop/input.ini")
+    try print(p.getValue(section: "COMMON", parameter: "DiskCachePath", type:  String()))
+    
+} catch ParserErrors.invalidPathToFile{
+        print("invalid path to file")
+}
+
+
 

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		CA26701C2526583B00F55F55 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA26701B2526583B00F55F55 /* main.swift */; };
+		CA2670242526585B00F55F55 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2670232526585B00F55F55 /* Parser.swift */; };
+		CA26702725265DCE00F55F55 /* ParserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA26702625265DCE00F55F55 /* ParserErrors.swift */; };
+		CA26702A2526A07B00F55F55 /* EnumParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2670292526A07B00F55F55 /* EnumParameters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +28,9 @@
 /* Begin PBXFileReference section */
 		CA2670182526583B00F55F55 /* ParserInit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ParserInit; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA26701B2526583B00F55F55 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		CA2670232526585B00F55F55 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		CA26702625265DCE00F55F55 /* ParserErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserErrors.swift; sourceTree = "<group>"; };
+		CA2670292526A07B00F55F55 /* EnumParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumParameters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,9 @@
 			isa = PBXGroup;
 			children = (
 				CA26701B2526583B00F55F55 /* main.swift */,
+				CA2670232526585B00F55F55 /* Parser.swift */,
+				CA26702625265DCE00F55F55 /* ParserErrors.swift */,
+				CA2670292526A07B00F55F55 /* EnumParameters.swift */,
 			);
 			path = ParserInit;
 			sourceTree = "<group>";
@@ -119,6 +128,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA26702A2526A07B00F55F55 /* EnumParameters.swift in Sources */,
+				CA26702725265DCE00F55F55 /* ParserErrors.swift in Sources */,
+				CA2670242526585B00F55F55 /* Parser.swift in Sources */,
 				CA26701C2526583B00F55F55 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
