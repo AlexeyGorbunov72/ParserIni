@@ -14,4 +14,7 @@ enum ParserErrors: Error{
     case unexistsParameter
     case invalidPair
     case invalidSectionName
+    case invalidSection
+    case whitespaceInName
+    case findCollision
 }

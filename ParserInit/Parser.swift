@@ -28,16 +28,35 @@ class Parser{
             if line.isSection(){
                 
                 curentSection = try line.getSectionName()
+                try checkSectionNameCollision(for: curentSection)
                 initFileData[curentSection] = [:]
             } else {
                 
                 let (parameter, value) = try line.getKeyValue()
-                initFileData[curentSection]?[parameter] = value
+                try putValue(section: curentSection,
+                             parameter: parameter,
+                             value: value)
             }
         }
     }
+    private func checkSectionNameCollision(for sectionName: String) throws{
+        if initFileData[sectionName] != nil{
+            throw ParserErrors.findCollision
+        }
+    }
     
-    func getValue<T>(section: String, parameter: String, type: T) throws -> T{
+    private func putValue(section: String, parameter: String, value: String) throws{
+        if initFileData[curentSection]![parameter] != nil{
+            throw ParserErrors.findCollision
+        }
+        if initFileData[curentSection] != nil{
+            initFileData[curentSection]![parameter] = value
+            return
+        }
+        throw ParserErrors.invalidSection
+    }
+    
+    func getValue<T>(section: String, parameter: String, type: T) throws -> T?{
         if !isEnableType(type: type){
             throw ParserErrors.invalidTypeOfParameter
         }
@@ -48,15 +67,13 @@ class Parser{
             throw ParserErrors.unexistsParameter
         }
         let value = try initFileData[section]![parameter]?.convertTo(type: type)
-        return value!
+        return value
         
     }
     
     func isEnableType<T>(type: T) -> Bool{
-        if type is String || type is Int || type is Float || type is Double{
-            return true
-        }
-        return false
+        return type is String || type is Int || type is Float || type is Double
+        
     }
 }
 
@@ -72,9 +89,12 @@ extension String.SubSequence{
     func getKeyValue() throws -> (key: String, value: String){
         if let separated = self.firstIndex(of: "="){
             
-            let key = String(self[..<separated]).trimmingCharacters(in: .whitespaces)
-            let value = String(self[self.index(after: separated)...]).trimmingCharacters(in: .whitespaces)
+            let key = String(self[..<separated])
+                .trimmingCharacters(in: .whitespaces)
             
+            let value = String(self[self.index(after: separated)...])
+                .trimmingCharacters(in: .whitespaces)
+            try checkOnWhiteSpace(for: key)
             if !key.isEmpty{
                 return (key, value)
             }
@@ -85,11 +105,20 @@ extension String.SubSequence{
     func getSectionName() throws -> String{
         if let separate = self.firstIndex(of: "["), let rightSeparate = self.lastIndex(of: "]"){
             let leftSeparate = self.index(after: separate)
+            let resultString = String(self[leftSeparate..<rightSeparate]).trimmingCharacters(in: .whitespaces)
             
-            return String(self[leftSeparate..<rightSeparate])
+            try checkOnWhiteSpace(for: resultString)
+            return resultString
         }
         
         throw ParserErrors.invalidSectionName
+    }
+    private func checkOnWhiteSpace(for string: String) throws{
+        if !string.isEmpty{
+            if string.contains(Character(" ")){
+                throw ParserErrors.whitespaceInName
+            }
+        }
     }
     func isSection() -> Bool{
         return self.first == "["
@@ -100,29 +129,33 @@ extension String.SubSequence{
 }
 
 extension String{
-    func convertTo<T>(type: T) throws -> T {
+    func convertTo<T>(type: T) throws -> T? {
        
         if type is Int{
-            guard let value = Int(self) as? T else {
+            guard let value = Int(self) as? T? else {
                 throw ParserErrors.invalidTypeOfParameter
             }
+        
             return value
         }
         if type is Float{
-            guard let value = (self as NSString).floatValue as? T else { throw ParserErrors.invalidTypeOfParameter
+            guard let value = Float(self) as? T? else { throw ParserErrors.invalidTypeOfParameter
             }
+            
             return value
         }
         if type is Double{
-            guard let value = Double(self) as? T else {
+            guard let value = Double(self) as? T? else {
                 throw ParserErrors.invalidTypeOfParameter
             }
+            
             return value
         }
         if type is String{
             guard let value = self as? T else {
                 throw ParserErrors.invalidTypeOfParameter
             }
+            
             return value
         }
         throw ParserErrors.invalidTypeOfParameter

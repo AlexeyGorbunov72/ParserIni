@@ -10,9 +10,9 @@ import Foundation
 let p = Parser()
 do{
     try p.parse(pathToFile: "/Users/Retard/Desktop/input.ini")
-    try print(p.getValue(section: "COMMON",
-                         parameter: "LogNCMD",
-                         type:  Float()))
+    try print(p.getValue(section: "LEGACY_XML",
+                         parameter: "ListenTcpPort",
+                         type:  String()))
     
 } catch ParserErrors.invalidPathToFile{
     print(ParserErrors.invalidPathToFile)
