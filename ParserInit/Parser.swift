@@ -23,6 +23,7 @@ class Parser{
         print(initFileData)
 
     }
+    
     private func parseLine(line: String.SubSequence) throws{
         if !line.isEmpty{
             if line.isSection(){
@@ -39,6 +40,7 @@ class Parser{
             }
         }
     }
+    
     private func checkSectionNameCollision(for sectionName: String) throws{
         if initFileData[sectionName] != nil{
             throw ParserErrors.findCollision
@@ -46,6 +48,9 @@ class Parser{
     }
     
     private func putValue(section: String, parameter: String, value: String) throws{
+        if initFileData[curentSection] == nil{
+            throw ParserErrors.invalidSection
+        }
         if initFileData[curentSection]![parameter] != nil{
             throw ParserErrors.findCollision
         }
@@ -53,6 +58,7 @@ class Parser{
             initFileData[curentSection]![parameter] = value
             return
         }
+        
         throw ParserErrors.invalidSection
     }
     
@@ -107,12 +113,22 @@ extension String.SubSequence{
             let leftSeparate = self.index(after: separate)
             let resultString = String(self[leftSeparate..<rightSeparate]).trimmingCharacters(in: .whitespaces)
             
+            if resultString.contains("["){
+                throw ParserErrors.invalidSectionName
+            }
+            if resultString.contains("]"){
+                throw ParserErrors.invalidSectionName
+            }
+            if resultString.isEmpty{
+                throw ParserErrors.invalidSectionName
+            }
             try checkOnWhiteSpace(for: resultString)
             return resultString
         }
         
         throw ParserErrors.invalidSectionName
     }
+    
     private func checkOnWhiteSpace(for string: String) throws{
         if !string.isEmpty{
             if string.contains(Character(" ")){
@@ -120,9 +136,12 @@ extension String.SubSequence{
             }
         }
     }
+    
     func isSection() -> Bool{
+        
         return self.first == "["
     }
+    
     private func strip() -> String.SubSequence{
         return String.SubSequence(self.trimmingCharacters(in: .whitespaces))
     }
@@ -133,27 +152,27 @@ extension String{
        
         if type is Int{
             guard let value = Int(self) as? T? else {
-                throw ParserErrors.invalidTypeOfParameter
+                throw ParserErrors.cantConvertToThisType
             }
         
             return value
         }
         if type is Float{
-            guard let value = Float(self) as? T? else { throw ParserErrors.invalidTypeOfParameter
+            guard let value = Float(self) as? T? else { throw ParserErrors.cantConvertToThisType
             }
             
             return value
         }
         if type is Double{
             guard let value = Double(self) as? T? else {
-                throw ParserErrors.invalidTypeOfParameter
+                throw ParserErrors.cantConvertToThisType
             }
             
             return value
         }
         if type is String{
             guard let value = self as? T else {
-                throw ParserErrors.invalidTypeOfParameter
+                throw ParserErrors.cantConvertToThisType
             }
             
             return value

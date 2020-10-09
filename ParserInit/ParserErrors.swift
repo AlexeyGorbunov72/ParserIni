@@ -17,4 +17,5 @@ enum ParserErrors: Error{
     case invalidSection
     case whitespaceInName
     case findCollision
+    case cantConvertToThisType
 }
